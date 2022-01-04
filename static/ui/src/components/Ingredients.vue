@@ -1,6 +1,6 @@
 <template>
   <v-row class="ingredients">
-    <v-col cols="3" v-bind:key="item" v-for="item in ingredients">
+    <v-col style="padding:0px" cols="3" v-bind:key="item" v-for="item in ingredients">
       <v-checkbox
         v-model="checkedIngredients"
         hide-details

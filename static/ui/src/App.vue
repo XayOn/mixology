@@ -8,7 +8,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-main contain>
+    <v-main class="pt-2 pt-sm-2 pt-xs-2 pt-md-0 pt-lg-0 pt-xl-0">
       <v-container  v-if="showSettings">
         <Settings v-on:saved="showSettings=false" />
       </v-container>
@@ -16,8 +16,8 @@
       <v-container>
         <Ingredients @select='updateRecipes'/>
       </v-container>
-      <v-container fluid style="margin-left:50px">
-        <v-row class="recipes" v-if="recipes.length != 0">
+      <v-container fluid style="margin-left:5px" v-if="recipes.length != 0">
+        <v-row class="recipes">
           <Recipe v-for="recipe in recipes" v-bind:key="recipe.name" :recipe=recipe />
         </v-row>
       </v-container>
