@@ -42,11 +42,11 @@ class TasmotaFinder:
     def tasmotas_with_config(self):
         result = defaultdict(dict)
         for tasmota in self.tasmotas:
-            if tasmota['topic'] in self.config:
-                opts = self.config[tasmota['topic']]
-                for key, values in opts.items():
-                    result[tasmota['topic']][key] = values.split(',') + [True]
-            else:
+            active = False
+            for key, values in self.config[tasmota['topic']].items():
+                result[tasmota['topic']][key] = values.split(',') + [True]
+                active = True
+            if not active:
                 for key in tasmota['relays']:
                     result[tasmota['topic']][key] = [None, None, None]
         return {"url": self.config["main"]['url'], 'tasmotas': result}
@@ -72,11 +72,13 @@ class TasmotaFinder:
 
     async def dispense(self, alcohol, quantity):
         def get_data(tasmotas):
-            for topic, tasmota in tasmotas.items():
+            for topic, tasmota in tasmotas['tasmotas'].items():
                 for relay, values in tasmota.items():
                     if not values:
                         continue
-                    alcohol_, time_per_cl = values
+                    alcohol_, time_per_cl, enabled = values
+                    if not enabled:
+                        continue
                     if alcohol_ == alcohol:
                         topic = f"cmnd/{topic}/Power{relay}"
                         return topic, time_per_cl
@@ -84,16 +86,12 @@ class TasmotaFinder:
         async with Client(self.url) as client:
             if values := get_data(self.tasmotas_with_config):
                 topic, time_per_cl = values
+                print(topic)
                 print("ON")
                 await client.publish(topic, payload=b'ON')
                 await asyncio.sleep(int(time_per_cl) / 100 * quantity)
-                await client.publish(topic, payload=b'OFF')
                 print("OFF")
-                print({
-                    "status": "published",
-                    "topic": topic,
-                    "time": int(quantity) * int(time_per_cl)
-                })
+                await client.publish(topic, payload=b'OFF')
             return {"status": False}
 
 
@@ -240,6 +238,9 @@ async def update_settings(request: Request):
         if tasmota not in runner.config.sections():
             runner.config.add_section(tasmota)
         for relay, values in elem.items():
-            runner.config[tasmota][relay] = f"{values[0]},{values[1]}"
+            if values[2]:
+                runner.config[tasmota][relay] = f"{values[0]},{values[1]}"
+            elif relay in runner.config[tasmota]:
+                del runner.config[tasmota][relay]
     runner.save_config()
     return runner.reload_config()

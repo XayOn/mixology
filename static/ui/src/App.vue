@@ -10,7 +10,7 @@
 
     <v-main contain>
       <v-container  v-if="showSettings">
-        <Settings />
+        <Settings v-on:saved="showSettings=false" />
       </v-container>
       <div v-if="!showSettings">
       <v-container>
