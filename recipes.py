@@ -11,6 +11,7 @@ import configparser
 import functools
 import json
 import operator
+import os
 from collections import defaultdict
 from functools import lru_cache
 from itertools import combinations
@@ -18,14 +19,18 @@ from pathlib import Path
 from typing import List
 from asyncio_mqtt import Client
 
-from fastapi import FastAPI, Query, Request
+from fastapi import FastAPI, Query, Request, APIRouter
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
+BASE = os.getenv('BASE_URL', '')
+RPRE = {'prefix': BASE} if os.getenv('BASE_URL') else {}
+router = APIRouter(**RPRE)
+
 app = FastAPI()
-app.mount("/js", StaticFiles(directory="static/ui/dist/js/"), name="js")
-app.mount("/images", StaticFiles(directory="static/images"), name="images")
-app.mount("/css", StaticFiles(directory="static/ui/dist/css/"), name="css")
+app.mount(f"{BASE}/js", StaticFiles(directory="static/ui/dist/js/"), name="js")
+app.mount(f"{BASE}/images", StaticFiles(directory="static/images"), name="images")
+app.mount(f"{BASE}/css", StaticFiles(directory="static/ui/dist/css/"), name="css")
 
 
 class TasmotaFinder:
@@ -182,12 +187,12 @@ def sorted_recipes(curr):
     return [a for a in sorted_ids if not a.alcohols - curr]
 
 
-@app.get("/", response_class=HTMLResponse)
+@router.get("/", response_class=HTMLResponse)
 async def index():
     return Path('static/ui/dist/index.html').read_text()
 
 
-@app.get("/recipes/")
+@router.get("/recipes/")
 async def calculate_recipes(current: List[str] = Query(None)):
     """Return recipes given a list of available alcohols"""
     if not current:
@@ -195,7 +200,7 @@ async def calculate_recipes(current: List[str] = Query(None)):
     return sorted_recipes(tuple(current))
 
 
-@app.post("/recipes/")
+@router.post("/recipes/")
 async def do_recipe(request: Request):
     """Execute a recipe"""
     cocktail = Cocktail(await request.json())
@@ -206,30 +211,25 @@ async def do_recipe(request: Request):
     return {"status": "OK", "result": result}
 
 
-@app.get("/alcohols")
+@router.get("/alcohols")
 async def ingredients():
     """Return all available alcoholic ingredients"""
     return functools.reduce(operator.or_, [a.alcohols for a in COCKTAILS])
 
 
-@app.on_event('startup')
-async def app_startup():
-    asyncio.create_task(runner.run_main())
-
-
-@app.get("/settings")
+@router.get("/settings")
 async def tasmotas():
     """Return all discovered tasmotas"""
     return runner.tasmotas_with_config
 
 
-@app.delete("/settings")
+@router.delete("/settings")
 async def update_tasmotas():
     """Update tasmotas"""
     return runner.reload_config()
 
 
-@app.post("/settings")
+@router.post("/settings")
 async def update_settings(request: Request):
     """Execute a recipe"""
     settings = await request.json()
@@ -244,3 +244,10 @@ async def update_settings(request: Request):
                 del runner.config[tasmota][relay]
     runner.save_config()
     return runner.reload_config()
+
+
+@app.on_event('startup')
+async def app_startup():
+    asyncio.create_task(runner.run_main())
+
+app.include_router(router)
