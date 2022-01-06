@@ -28,9 +28,9 @@ RPRE = {'prefix': BASE} if os.getenv('BASE_URL') else {}
 router = APIRouter(**RPRE)
 
 app = FastAPI()
-app.mount(f"{BASE}/js", StaticFiles(directory="static/ui/dist/js/"), name="js")
-app.mount(f"{BASE}/images", StaticFiles(directory="static/images"), name="images")
-app.mount(f"{BASE}/css", StaticFiles(directory="static/ui/dist/css/"), name="css")
+app.mount(f"{BASE}/js", StaticFiles(directory="ui/dist/js/"), name="js")
+app.mount(f"{BASE}/css", StaticFiles(directory="ui/dist/css/"), name="css")
+app.mount(f"{BASE}/images", StaticFiles(directory="ui/images"), name="images")
 
 
 class TasmotaFinder:
