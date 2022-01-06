@@ -48,9 +48,10 @@ class TasmotaFinder:
         result = defaultdict(dict)
         for tasmota in self.tasmotas:
             active = False
-            for key, values in self.config[tasmota['topic']].items():
-                result[tasmota['topic']][key] = values.split(',') + [True]
-                active = True
+            if tasmota['topic'] in self.config.sections():
+                for key, values in self.config[tasmota['topic']].items():
+                    result[tasmota['topic']][key] = values.split(',') + [True]
+                    active = True
             if not active:
                 for key in tasmota['relays']:
                     result[tasmota['topic']][key] = [None, None, None]
@@ -189,7 +190,7 @@ def sorted_recipes(curr):
 
 @router.get("/", response_class=HTMLResponse)
 async def index():
-    return Path('static/ui/dist/index.html').read_text()
+    return Path('ui/dist/index.html').read_text()
 
 
 @router.get("/recipes/")
