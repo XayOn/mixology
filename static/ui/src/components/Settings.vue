@@ -100,18 +100,18 @@ export default {
   },
   methods: {
     async save() {
-      await window.axios.post("/settings", this.saveSettings);
+      await window.axios.post("settings", this.saveSettings);
       this.$emit('saved')
     },
     async updateTasmotas() {
-      this.settings = await window.axios.get(`/settings`);
+      this.settings = await window.axios.get(`settings`);
       this.saveSettings = this.settings;
     },
   },
   async mounted() {
-    this.settings = await window.axios.get(`/settings`);
+    this.settings = await window.axios.get(`settings`);
     this.saveSettings = this.settings;
-    this.ingredients = await window.axios.get(`/alcohols`);
+    this.ingredients = await window.axios.get(`alcohols`);
   },
 };
 </script>

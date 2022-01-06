@@ -20,7 +20,7 @@ export default {
     return { checkedIngredients: [], itemsPerRow: 9, ingredients: [] };
   },
   async mounted() {
-    this.ingredients = await window.axios.get(`/alcohols`);
+    this.ingredients = await window.axios.get(`alcohols`);
   }
 };
 </script>

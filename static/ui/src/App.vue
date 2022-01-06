@@ -45,7 +45,7 @@ export default {
   methods: {
     async updateRecipes(ingredients) {
         let vals = ""; for (const v of ingredients) { vals += `current=${v}&`}
-        this.recipes = await window.axios.get(`/recipes/?${vals}`)
+        this.recipes = await window.axios.get(`recipes/?${vals}`)
     }
   },
   components: {

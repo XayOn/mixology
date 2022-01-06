@@ -71,7 +71,7 @@ export default {
       return `${ingredient.amount}${ingredient.unit}`;
     },
     async prepare(recipe) {
-      await window.axios.post(`/recipes/`, recipe);
+      await window.axios.post(`recipes/`, recipe);
     }
   }
 };

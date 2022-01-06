@@ -12,7 +12,6 @@ ENV PATH="$POETRY_PATH/bin:$VENV_PATH/bin:$PATH"
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y curl build-essential\
-    && curl -sL https://deb.nodesource.com/setup_16.x | bash - \
     && curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python \
     && mv /root/.poetry $POETRY_PATH \
     && poetry --version && python -m venv $VENV_PATH \
@@ -26,10 +25,17 @@ COPY . ./
 RUN poetry install --no-dev
 
 FROM python:3.9.1-slim as runtime
+
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y curl build-essential\
+    && curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+
 ENV PATH="$POETRY_PATH/bin:$VENV_PATH/bin:$PATH"
 COPY --from=build $VENV_PATH $VENV_PATH
 COPY --from=build /app/ /app/
-COPY --from=nodebuild /app/static/ui/dist /app/static/ui/dist
 
 EXPOSE 8000
 WORKDIR /app
