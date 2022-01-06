@@ -92,11 +92,8 @@ class TasmotaFinder:
         async with Client(self.url) as client:
             if values := get_data(self.tasmotas_with_config):
                 topic, time_per_cl = values
-                print(topic)
-                print("ON")
                 await client.publish(topic, payload=b'ON')
                 await asyncio.sleep(int(time_per_cl) / 100 * quantity)
-                print("OFF")
                 await client.publish(topic, payload=b'OFF')
             return {"status": False}
 

@@ -1203,17 +1203,17 @@
     ],
     "garnish": "Lemon twist and a cherry",
     "preparation": "Shake with ice cubes. Strain into chilled cocktail glass." },
-  { "name": "Caipirinha",
+  { "name": "Caipiroska",
     "glass": "old-fashioned",
     "category": "All Day Cocktail",
     "ingredients": [
       { "unit": "cl",
         "amount": 5,
-        "ingredient": "Cachaca" },
+        "ingredient": "Vodka" },
       { "special": "half fresh lime cut into 4 wedges" },
       { "special": "2 teaspoon sugar" }
     ],
-    "preparation": "Place lime and sugar in old fashion glass and muddle. Fill glass with ice and Cachaca (note:Caipiroska- use Vodka instead of Cachaca)." },
+    "preparation": "Place lime and sugar in old fashion glass and muddle. Fill glass with ice and Vodka." },
   { "name": "Vampiro",
     "glass": "highball",
     "ingredients": [
