@@ -76,7 +76,7 @@ class TasmotaFinder:
                             'relays': relays
                         })
 
-    async def dispense(self, alcohol, quantity):
+    async def dispense(self, alcohol, quantity, client):
         def get_data(tasmotas):
             for topic, tasmota in tasmotas['tasmotas'].items():
                 for relay, values in tasmota.items():
@@ -89,13 +89,14 @@ class TasmotaFinder:
                         topic = f"cmnd/{topic}/Power{relay}"
                         return topic, time_per_cl
 
-        async with Client(self.url) as client:
-            if values := get_data(self.tasmotas_with_config):
-                topic, time_per_cl = values
-                await client.publish(topic, payload=b'ON')
-                await asyncio.sleep(int(time_per_cl) / 100 * quantity)
-                await client.publish(topic, payload=b'OFF')
-            return {"status": False}
+        if values := get_data(self.tasmotas_with_config):
+            topic, time_per_cl = values
+            print(f"Doing {topic} for {(int(time_per_cl) / 1000) * quantity}s")
+            await client.publish(topic, payload=b'ON')
+            await asyncio.sleep(int(time_per_cl) / 1000 * quantity)
+            await client.publish(topic, payload=b'OFF')
+            print(f"Finished doing {topic} for {(int(time_per_cl) / 1000) * quantity}s")
+        return {"status": False}
 
 
 runner = TasmotaFinder()
@@ -203,9 +204,12 @@ async def do_recipe(request: Request):
     """Execute a recipe"""
     cocktail = Cocktail(await request.json())
     result = {}
-    for alcohol, quantity in cocktail.quantified_alcohols:
-        result[alcohol] = quantity
-        await asyncio.create_task(runner.dispense(alcohol, quantity))
+    tasks = []
+    async with Client(runner.url) as client:
+        for alcohol, quantity in cocktail.quantified_alcohols:
+            result[alcohol] = quantity
+            tasks.append(runner.dispense(alcohol, quantity, client))
+        await asyncio.gather(*tasks)
     return {"status": "OK", "result": result}
 
 

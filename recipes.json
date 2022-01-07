@@ -48,7 +48,8 @@
         "label": "Sweet red vermouth" }
     ],
     "garnish": "Half an orange slice",
-    "preparation": "Build into old-fashioned glass filled with ice. Stir gently." },
+    "preparation": "Build into old-fashioned glass filled with ice. Stir gently."
+  },
   { "name": "Rose",
     "glass": "martini",
     "ingredients": [
@@ -1283,5 +1284,42 @@
         "ingredient": "Orange juice" }
     ],
     "garnish": "Orance slice and a cherry",
-    "preparation": "Build vodka and orange juice into a highball glass filled with ice. Stir gently and float Galliano on top." }
+    "preparation": "Build vodka and orange juice into a highball glass filled with ice. Stir gently and float Galliano on top." },
+
+{ "name": "Vodka shot",
+    "glass": "shot",
+    "category": "shot",
+    "ingredients": [{ "unit": "cl", "amount": 3, "ingredient": "Vodka" }],
+    "garnish": "",
+    "preparation": "None." },
+{ "name": "Tequila shot",
+    "glass": "shot",
+    "category": "shot",
+    "ingredients": [{ "unit": "cl", "amount": 3, "ingredient": "Tequila" }],
+    "garnish": "",
+    "preparation": "None." },
+{ "name": "White rum shot",
+    "glass": "shot",
+    "category": "shot",
+    "ingredients": [{ "unit": "cl", "amount": 3, "ingredient": "White rum" }],
+    "garnish": "",
+    "preparation": "None." },
+{ "name": "Triple Sec shot",
+    "glass": "shot",
+    "category": "shot",
+    "ingredients": [{ "unit": "cl", "amount": 3, "ingredient": "Triple Sec" }],
+    "garnish": "",
+    "preparation": "None." },
+{ "name": "Gin shot",
+    "glass": "shot",
+    "category": "shot",
+    "ingredients": [{ "unit": "cl", "amount": 3, "ingredient": "Gin" }],
+    "garnish": "",
+    "preparation": "None." },
+    { "name": "Vermouth shot",
+    "glass": "shot",
+    "category": "shot",
+    "ingredients": [{ "unit": "cl", "amount": 3, "ingredient": "Vermouth" }],
+    "garnish": "",
+    "preparation": "None." }
 ]
