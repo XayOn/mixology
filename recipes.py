@@ -12,6 +12,7 @@ import functools
 import json
 import operator
 import os
+from contextlib import suppress
 from collections import defaultdict
 from functools import lru_cache
 from itertools import combinations
@@ -25,6 +26,7 @@ from fastapi.staticfiles import StaticFiles
 
 BASE = os.getenv('BASE_URL', '')
 RPRE = {'prefix': BASE} if os.getenv('BASE_URL') else {}
+print(f"Starting with parameters {RPRE}")
 router = APIRouter(**RPRE)
 
 app = FastAPI()
@@ -60,6 +62,12 @@ class TasmotaFinder:
     def reload_config(self):
         self.config.read('main.ini')
         return {"status": True}
+
+    async def retry_main(self):
+        while True:
+            with suppress(Exception):
+                await self.run_main()
+                await asyncio.sleep(5)
 
     async def run_main(self):
         async with Client(self.url) as client:
