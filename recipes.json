@@ -297,7 +297,7 @@
     "category": "Longdrink",
     "ingredients": [
       { "unit": "cl",
-        "amount": 5,
+        "amount": 3,
         "ingredient": "White rum" },
       { "unit": "cl",
         "amount": 12,
