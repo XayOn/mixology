@@ -14,25 +14,25 @@ connect them to your alcoholic beverages.
 
 |pypi| |release| |downloads| |python_versions| |pypi_versions| |coverage| |actions|
 
-.. |pypi| image:: https://img.shields.io/pypi/l/mixology
-.. |release| image:: https://img.shields.io/librariesio/release/pypi/mixology
-.. |downloads| image:: https://img.shields.io/pypi/dm/mixology
-.. |python_versions| image:: https://img.shields.io/pypi/pyversions/mixology
-.. |pypi_versions| image:: https://img.shields.io/pypi/v/mixology
-.. |actions| image:: https://github.com/XayOn/mixology/workflows/CI%20commit/badge.svg
-    :target: https://github.com/XayOn/mixology/actions
+.. |pypi| image:: https://img.shields.io/pypi/l/mixologist
+.. |release| image:: https://img.shields.io/librariesio/release/pypi/mixologist
+.. |downloads| image:: https://img.shields.io/pypi/dm/mixologist
+.. |python_versions| image:: https://img.shields.io/pypi/pyversions/mixologist
+.. |pypi_versions| image:: https://img.shields.io/pypi/v/mixologist
+.. |actions| image:: https://github.com/XayOn/mixologist/workflows/CI%20commit/badge.svg
+    :target: https://github.com/XayOn/mixologist/actions
 
 Installation
 ------------
 
-This software is available on `Pypi <https://pypi.org/project/mixology/>`_, you
+This software is available on `Pypi <https://pypi.org/project/mixologist/>`_, you
 can install it directly with pip::
 
-        pip install mixology uvicorn
+        pip install mixologist uvicorn
 
 After that, you should run it with uvicorn::
 
-        uvicorn mixology:app
+        uvicorn mixologist:app
 
 
 You can also use docker, with a docker-compose like this one.
@@ -41,11 +41,11 @@ You can also use docker, with a docker-compose like this one.
 
     version: "3.3"
     services:
-      mixology:
-        image: xayon/mixology
+      mixologist:
+        image: xayon/mixologist
         restart: always
         environment:
-          - BASE_URL=/mixology
+          - BASE_URL=/mixologist
 
 The BASE_URL variable is useful on reverse-proxy setups.
 

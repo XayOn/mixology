@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "cocktails"
+name = "mixologist"
 version = "0.1.0"
 description = ""
 authors = ["David Francos <opensource@davidfrancos.net>"]
