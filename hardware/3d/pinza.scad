@@ -1,7 +1,7 @@
 use <./catchnhole/catchnhole.scad>;
 // Measurements are in MILIMETERS.
-topleft=0;
-topright=0;
+topleft=200;
+topright=200;
 base_len=45;
 cwid = 10;
 p = 5; // TODO: technically, we can use 0.6cm here. It **should** fit up to 0.75 but we want to add some margin.
@@ -118,8 +118,10 @@ module Grip(base_x, base_y){
 
 cols = 7;
 lines = 2;
+rotate([180,0,0]){
 
 for (col =[0:cols-1]) {
    for (lin =[0:lines-1]) 
        Grip(separation * 2 * lin, 20 * col);
+}
 }
