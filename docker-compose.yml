@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  fastapi_app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - MQTT_URL=mqtt://mqtt:1883
+      - MONGO_URL=mongodb://root:example@mongo:27017
+    depends_on:
+      - mongo
+      - mqtt
+    command:  ["uvicorn", "--factory", "mixology.app:get_app", "--port", "8080", "--host", "0.0.0.0", "--log-level=debug", "--reload"]
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+
+  mongo:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  mqtt:
+    image: eclipse-mosquitto:latest
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-log:/mosquitto/log
+
+volumes:
+  mongo-data:
+  mosquitto-data:
+  mosquitto-log:
+

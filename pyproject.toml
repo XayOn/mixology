@@ -16,15 +16,12 @@ authors = [
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
+    "motor",
     "sqlalchemy",
     "pydantic-settings",
     "databases",
@@ -32,7 +29,8 @@ dependencies = [
     "fastapi",
     "httpx",
     "uvicorn",
-    "asyncio-mqtt",
+    "aiomqtt",
+    "redis",
     "openai"
 ]
 
@@ -45,6 +43,7 @@ Source = "https://github.com/unknown/mixology"
 path = "src/mixology/__about__.py"
 
 [tool.hatch.envs.default]
+python = "3.11"
 dependencies = [
   "coverage[toml]>=6.5",
   "pytest",
@@ -88,13 +87,13 @@ all = [
 ]
 
 [tool.black]
-target-version = ["py37"]
-line-length = 120
+target-version = ["py311"]
+line-length = 80
 skip-string-normalization = true
 
 [tool.ruff]
-target-version = "py37"
-line-length = 120
+target-version = "py311"
+line-length = 80
 select = [
   "A",
   "ARG",
@@ -127,6 +126,7 @@ ignore = [
   "B027",
   # Allow boolean positional values in function calls, like `dict.get(... True)`
   "FBT003",
+  "B008",
   # Ignore checks for possible passwords
   "S105", "S106", "S107",
   # Ignore complexity

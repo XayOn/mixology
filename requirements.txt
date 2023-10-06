@@ -1,0 +1,14 @@
+aiomqtt
+coverage[toml]>=6.5
+databases
+fastapi
+httpx
+motor
+openai
+pydantic
+pydantic-settings
+pytest
+redis
+sqlalchemy
+uvicorn
+-e .
