@@ -11,6 +11,8 @@ from mixology.models import Tasmota
 from mixology.preparer.models import Ingredient
 from mixology.settings import Settings
 
+logging.basicConfig(level=logging.INFO)
+
 
 class AnonymousTasmotaBBDDService:
     """Tasmota database service with motor."""
