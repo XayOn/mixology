@@ -121,6 +121,7 @@ class TasmotaDispenserService:
         # Roughly estimate on how much it takes to fill 1ml...
         # this lacks precission but for now it'll be enough
         modifier = 0.4
+        ingredient.density = 1
         time_ = ingredient.amount * modifier * ingredient.density
         logging.info(
             "Waiting %s seconds (%s, %s)",
