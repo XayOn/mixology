@@ -122,7 +122,12 @@ class TasmotaDispenserService:
         # this lacks precission but for now it'll be enough
         modifier = 0.4
         time_ = ingredient.amount * modifier * ingredient.density
-        logging.info("Waiting %s seconds", time_)
+        logging.info(
+            "Waiting %s seconds (%s, %s)",
+            time_,
+            ingredient.amount,
+            ingredient.density,
+        )
         await asyncio.sleep(time_)
         await client.publish(topic, payload=b"0")
         return {"status": True}
